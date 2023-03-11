@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+  <!-- calpler CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+  <title>Calpler</title>
+</head>
+<body>
+<div class="header">
+  <div class="logotext">
+    <div class="logotextItem">CALPLER</div>
+  </div>
+  <div class="menu">
+    <a href="/" class="menuItem nonDecoLink">멘토 검색</a>
+    <div class="menuItem">커뮤니티</div>
+  </div>
+  <a href="/user/login" sec:authorize="isAnonymous()" class="loginButton nonDecoLink">로그인</a>
+  <a href="/user/create" sec:authorize="isAnonymous()" class="signupButton nonDecoLink">회원가입</a>
+  <a href="/user/logout" sec:authorize="isAuthenticated()" class="loginButton nonDecoLink">로그아웃</a>
+</div>
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<div style="margin-top: 100px;"></div>
+<th:block layout:fragment="content"></th:block>
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

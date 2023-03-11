@@ -1,0 +1,68 @@
+<html layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <div layout:fragment="content" class="my-1 myBody">
+        <div class="myNav">
+            <div style="margin-left: 30px; margin-right: 30px; width: 150px; font-size: 20px">커리어 선택</div>
+            <tr th:each="tag: ${tagMap}">
+                <div style="margin-top: 30px; margin-left: 30px; width: 150px">
+                    <input type="checkbox" name="tag" th:value="${tag.key}" th:checked="${tagList.contains(tag.key.toString())}">
+                    <td th:text="${tag.value}" style="font-size: 40px"></td>
+                </div>
+            </tr>
+            <button class="btn btn-outline-secondary" style="margin-left: 30px; margin-top: 30px" type="button" id="btn_search">찾기</button>
+        </div>
+        <div class="myContent">
+            <div class="myBoard">
+                <tbody>
+                <div>
+                    <tr th:each="board, loop : ${boardPage}">
+                        <div style="display: flex; flex-flow: row nowrap; margin: 30px; margin-left: 60px">
+                            <div>
+                                <img style="width: 120px; height: 160px" th:src="${board.getFilepath()}">
+                            </div>
+                            <div style="display: flex; flex-flow: column nowrap; margin-left: 20px">
+                                <a class="listText" th:href="@{|/board/view/${board.getId()}|}" th:text="${board.getName()}"></a>
+                                <a class="listText" th:text="${board.getDepartment()}"></a>
+                                <a class="listText" th:text="${board.getJob()}"></a>
+                                <a class="listText" th:text="${board.getExperience()}"></a>
+                            </div>
+                        </div>
+                    </tr>
+                </div>
+                </tbody>
+            </div>
+            <div class="pageBoard">
+                <tr th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                    <a th:text="${page}" class="pageBoardItem nonDecoLink page-link"
+                       th:classappend="${page == nowPage} ? 'curPageButton'"
+                       href="javascript:void(0)" th:data-page="${page - 1}"></a>
+                </tr>
+            </div>
+            <a th:href="@{/board/create}" class="btn btn-primary" style="margin-left: 700px">정보 등록하기</a>
+            <form th:action="@{|/board/list/${university}|}" method="get" id="searchForm">
+                <input type="hidden" id="page" name="page" th:value="${boardPage.number}">
+                <input type="hidden" id="tag" name="tag" th:value="${tagString}">
+            </form>
+        </div>
+    </div>
+    <script layout:fragment="script" type='text/javascript'>
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+        const btn_search = document.getElementById("btn_search");
+        btn_search.addEventListener('click', function() {
+            const tag_elements = document.getElementsByName("tag");
+            let tagString = "";
+            Array.from(tag_elements).forEach(function(element) {
+                if (element.checked) tagString += `${element.value},`;
+            })
+            document.getElementById('tag').value = tagString;
+            document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+            document.getElementById('searchForm').submit();
+        });
+    </script>
+</html>

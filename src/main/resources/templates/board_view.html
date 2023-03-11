@@ -1,0 +1,83 @@
+<html layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div layout:fragment="content">
+        <a class="btn btn-sm btn-outline-secondary mx-4" th:href="|/board/list/${board.getUniversity()}|">이전</a>
+        <div style="display: flex; flex-flow: row nowrap; margin-left: 450px">
+            <div>
+                <img style="width: 120px; height: 160px" th:src="${board.getFilepath()}">
+            </div>
+            <div style="display: flex; flex-flow: column nowrap; margin-left: 20px">
+                <a class="listText" th:text="${board.getName()}"></a>
+                <a class="listText" th:text="${board.getDepartment()}"></a>
+                <a class="listText" th:text="${board.getJob()}"></a>
+                <a class="listText" th:text="${board.getExperience()}"></a>
+            </div>
+        </div>
+        <div style="border: solid 1px black; height: 150px; width: 500px; margin-left: 300px; margin-top: 20px; padding: 10px;" th:text="${board.getText()}"></div>
+        <div style="border: solid 1px black; height: 50px; width: 500px; margin-left: 300px; margin-top: 20px; padding: 10px;" th:text="${board.getLink()}"></div>
+        <div class="my-3 border-bottom" style="padding-left: 900px; padding-bottom: 20px">
+            <a th:href="@{|/board/modify/${board.getId()}|}" class="btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${board.getAuthor() != null and #authentication.getPrincipal().getUsername() == board.getAuthor()}"
+               th:text="수정"></a>
+            <a href="javascript:void(0);" th:data-uri="@{|/board/delete/${board.getId()}|}"
+               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:if="${board.getAuthor() != null and #authentication.getPrincipal().getUsername() == board.getAuthor()}"
+               th:text="삭제"></a>
+        </div>
+        <h5 style="margin: 30px; margin-left: 300px" th:text="|댓글 수: ${#lists.size(commentList)}개|"></h5>
+        <div style="margin-left: 260px">
+            <ul>
+                <tr th:each="comment : ${commentList}">
+                    <div th:if="${comment.getGroupNum() == comment.getId()}">
+                        <div style="width: 500px; border: solid 1px black; padding: 20px; margin: 10px">
+                            <div style="font-weight: bold; margin-bottom: 10px" th:text="${comment.getAuthor()}"></div>
+                            <div th:text="${comment.getText()}"></div>
+                        </div>
+                        <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.getId()}|}"
+                           style="margin-left: 400px" class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                           th:if="${comment.getAuthor() != null and #authentication.getPrincipal().getUsername() == comment.getAuthor()}"
+                           th:text="삭제"></a>
+                        <a th:href="@{|/board/view/${board.getId()}?commentGroup=0|}"
+                           th:if="${comment.getGroupNum() == commentGroup}"
+                           class="btn btn-sm btn-outline-secondary text-bg-danger" sec:authorize="isAuthenticated()"
+                           th:text="대댓글"></a>
+                        <a th:href="@{|/board/view/${board.getId()}?commentGroup=${comment.getGroupNum()}|}"
+                           th:if="${comment.getGroupNum() != commentGroup}"
+                           class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                           th:text="대댓글"></a>
+                    </div>
+                    <div th:if="${comment.getGroupNum() != comment.getId()}" style="margin-left: 30px">
+                        <div style="width: 470px; border: solid 1px black; padding: 20px; margin: 10px">
+                            <div style="font-weight: bold; margin-bottom: 10px" th:text="${comment.getAuthor()}"></div>
+                            <div th:text="${comment.getText()}"></div>
+                        </div>
+                        <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.getId()}|}"
+                           style="margin-left: 435px" class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                           th:if="${comment.getAuthor() != null and #authentication.getPrincipal().getUsername() == comment.getAuthor()}"
+                           th:text="삭제"></a>
+                    </div>
+                </tr>
+            </ul>
+        </div>
+        <form th:action="@{|/comment/create/${board.getId()}?commentGroup=${commentGroup}|}" th:object="${commentForm}" method="post">
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+                <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+            </div>
+            <textarea sec:authorize="isAnonymous()" disabled class="viewCommandInput" th:field="*{text}" rows="15"></textarea>
+            <textarea sec:authorize="isAuthenticated()" class="viewCommentInput" th:field="*{text}" rows="15"></textarea>
+            <br>
+            <input class="viewCommentButton btn btn-sm btn-outline-secondary" type="submit" value="답변등록">
+        </form>
+    </div>
+    <script layout:fragment="script" type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+    </script>
+</html>
