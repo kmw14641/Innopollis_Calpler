@@ -1,6 +1,6 @@
 # Innopollis_Calpler
 
-> 링크: https://everytime1.azurewebsites.net/board/list   
+> 링크: https://calpler.azurewebsites.net/   
 > 서버는 열어두었지만 첫 접속이 아주 느릴 수 있습니다. (Azure 무료 요금제가 원인일 수도 있음)
 --------------------------------------------------------------------------------------------
 아래의 이미지들은 개략적인 기능의 종류와 그 사진들입니다.
