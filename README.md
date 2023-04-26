@@ -15,10 +15,10 @@
 ![image](https://user-images.githubusercontent.com/102219400/234644630-ca326f39-5f1c-46cb-8a56-d1143e449456.png)
 
 + 멘토 정보 리스트 (인터페이스 및 내부 데이터는 디자인/기획을 담당한 팀원의 예시를 기준으로 하였음)
-![image](https://user-images.githubusercontent.com/102219400/234645198-c58b1d5c-3ded-48bd-a197-9358cac91501.png)
+![image](https://user-images.githubusercontent.com/102219400/234651036-e3bc73ff-342c-4750-ad88-d9391776ad50.png)
 
 + 정보 등록 버튼
-![image](https://user-images.githubusercontent.com/102219400/234646445-c595a947-08d1-4673-a25a-ce34b72749ee.png)
+![image](https://user-images.githubusercontent.com/102219400/234651110-d429f99c-9972-4c3b-a142-2a7968a5490b.png)
 
 + 로그인 페이지
 ![image](https://user-images.githubusercontent.com/102219400/234646769-33db76bd-971e-409c-aa55-29d2517d4ee9.png)
